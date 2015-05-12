@@ -82,13 +82,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                                 model.setStatus(DayModel.NORMAL);
                                                 return model;
                                             } //else
-                                               // Toast.makeText(MainActivity.this, temp.getDate() + "", Toast.LENGTH_SHORT).show();
+                                            // Toast.makeText(MainActivity.this, temp.getDate() + "", Toast.LENGTH_SHORT).show();
 
 
                                             if (DateUtils.sameDate(temp, model.getDate())) {
                                                 model.setStatus(DayModel.NORMAL);
                                                 return model;
                                             }
+
+                                            if (model.getDate().before(first.getDate())) {
+                                                if (model.getPrice() == 0) {
+                                                    model.setStatus(DayModel.DISABLE);
+                                                }else model.setStatus(DayModel.NORMAL);
+                                                return model;
+
+                                            }
+
 
                                             if (model.getDate().after(temp)) {
                                                 model.setStatus(DayModel.DISABLE);
@@ -155,11 +164,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Calendar f = Calendar.getInstance();
         f.setTime(first.getDate());
 
-        while (!nopricelist.contains(f.getTime())) {
+        while (!nopricelist.contains(f.getTime()) && f.getTime().before(lastDay)) {
             f.add(Calendar.DATE, 1);
-
         }
-
 
         return f.getTime();
 
@@ -176,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-
+    Date lastDay;
     List<HashMap<Date, DayModel>> list;
 
     private List<HashMap<Date, DayModel>> getList() {
@@ -208,6 +215,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 map.put(b.getTime(), dm);
                 b.add(Calendar.DAY_OF_MONTH, 1);
+                lastDay = b.getTime();
             }
             list.add(map);
         }
@@ -232,8 +240,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             b.add(Calendar.DATE, 1);
         }
 
-        for(Date d:nopricelist){
-            Log.d("noprice",d.toString());
+        for (Date d : nopricelist) {
+            Log.d("noprice", d.toString());
         }
 
 
