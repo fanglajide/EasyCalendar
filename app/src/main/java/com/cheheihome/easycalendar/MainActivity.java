@@ -30,6 +30,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     DayModel l;
     Date temp;
 
+    int leastSelect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +40,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         easyCalendar = (EasyCalendar) findViewById(R.id.easyCalendar);
         hello = (TextView) findViewById(R.id.hello);
         hello.setOnClickListener(this);
+        leastSelect = 2;
 
         b = Calendar.getInstance();
         e = Calendar.getInstance();
         e.add(Calendar.MONTH, 6);
         // easyCalendar.setRange(b.getTime(), e.getTime());
+        Date fd = new Date(115, 5, 3);
+        Date ld = new Date(115, 5, 7);
 
+        easyCalendar.setSelectedRange(fd, ld);
 
         easyCalendar.setHandler(new EasyCalendar.DayHandler() {
                                     @Override
@@ -53,10 +59,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                                         if (model.getSTATUS() == DayModel.BEFORETODAY) return null;
 
-                                        if (first != null && model.getDate() == first.getDate()) {
+                                        if (first != null && DateUtils.sameDate(date, first.getDate())) {
                                             model.setStatus(DayModel.FIRST);
                                             return model;
-                                        } else if (last != null && model.getDate() == last.getDate()) {
+                                        } else if (last != null && DateUtils.sameDate(date, last.getDate())) {
                                             model.setStatus(DayModel.LAST);
                                             return model;
                                         }
@@ -67,11 +73,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                             temp = null;
                                             Date f = first.getDate();
                                             Date l = last.getDate();
-                                            if (f.after(date)) {
-                                                model.setStatus(DayModel.NORMAL);
-                                            } else if (f.before(date) && l.after(date)) {
+                                            if (f.before(date) && l.after(date)) {
                                                 model.setStatus(DayModel.MID);
-                                            } else model.setStatus(DayModel.NORMAL);
+                                                return model;
+                                            } else {
+                                                if (model.getPrice() == 0) {
+                                                    model.setStatus(DayModel.DISABLE);
+                                                    return model;
+                                                }
+
+                                                model.setStatus(DayModel.NORMAL);
+                                            }
 
                                             return model;
                                         }
@@ -83,23 +95,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                                 return model;
                                             } //else
                                             // Toast.makeText(MainActivity.this, temp.getDate() + "", Toast.LENGTH_SHORT).show();
-
-
-                                            if (DateUtils.sameDate(temp, model.getDate())) {
+                                            if (first.getDate().before(date)&&DateUtils.InafterDays(leastSelect, first.getDate(), date)) {
+                                                model.setStatus(DayModel.DISABLE);
+                                                return model;
+                                            }
+                                            if (DateUtils.sameDate(temp, date)) {
                                                 model.setStatus(DayModel.NORMAL);
                                                 return model;
                                             }
 
-                                            if (model.getDate().before(first.getDate())) {
+                                            if (date.before(first.getDate())) {
                                                 if (model.getPrice() == 0) {
                                                     model.setStatus(DayModel.DISABLE);
-                                                }else model.setStatus(DayModel.NORMAL);
+                                                } else model.setStatus(DayModel.NORMAL);
                                                 return model;
 
                                             }
 
 
-                                            if (model.getDate().after(temp)) {
+                                            if (date.after(temp)) {
                                                 model.setStatus(DayModel.DISABLE);
                                                 return model;
                                             }

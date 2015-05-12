@@ -16,15 +16,14 @@ public class DateUtils {
     }
 
 
-    public static boolean sameDate(Date d1,Date d2){
-        Calendar c1=Calendar.getInstance();
+    public static boolean sameDate(Date d1, Date d2) {
+        Calendar c1 = Calendar.getInstance();
         c1.setTime(d1);
-        Calendar c2=Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
         c2.setTime(d2);
-        return sameDate(c2,c1);
+        return sameDate(c2, c1);
 
     }
-
 
 
     public static boolean SelectedBefore(Calendar cal, Calendar selectedDate) {
@@ -43,7 +42,19 @@ public class DateUtils {
     public static boolean beforeToday(Date date) {
         Calendar selected = Calendar.getInstance();
         selected.setTime(date);
-        return selected.before(today)&&!sameDate(today,selected);
+        return selected.before(today) && !sameDate(today, selected);
+
+    }
+
+
+    public static boolean InafterDays(int days, Date dahead, Date dafter) {
+        Calendar da = Calendar.getInstance();
+        da.setTime(dahead);
+        da.add(Calendar.DATE, days);
+        Calendar df = Calendar.getInstance();
+        df.setTime(dafter);
+
+        return df.before(da);
 
     }
 

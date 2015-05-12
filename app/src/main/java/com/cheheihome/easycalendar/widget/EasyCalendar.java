@@ -42,9 +42,16 @@ public class EasyCalendar extends ListView implements EasyInterface {
     }
 
 
+    public void setSelectedRange(Date firstSelected, Date lastSelected) {
+        if (firstSelected != null) setSelectFirst(new DayModel(firstSelected));
+        if (lastSelected != null) setSelectLast(new DayModel(lastSelected));
+    }
+
+
     public void setup() {
         if (list == null) throw new IllegalArgumentException(
                 "minDate and maxDate must be non-null.  ");
+        dealData();
         adapter = new CalendarAdapter(getContext(), list, new DayCell.DayCallBack() {
             @Override
             public boolean callBack(DayModel model) {
@@ -72,12 +79,11 @@ public class EasyCalendar extends ListView implements EasyInterface {
                     } else {
 
                         if (last == null) {
-                            if (first.getDate().before(model.getDate()))
-                            {
+                            if (first.getDate().before(model.getDate())) {
                                 setSelectLast(model);
-                            setCurrentStatus(SELECTEDRANGE);
-                            }
-                            else {setCurrentStatus(SELECTEDFIRST);
+                                setCurrentStatus(SELECTEDRANGE);
+                            } else {
+                                setCurrentStatus(SELECTEDFIRST);
                                 setSelectFirst(model);
                             }
                             //  model.setStatus(DayModel.LAST);
@@ -198,7 +204,7 @@ public class EasyCalendar extends ListView implements EasyInterface {
                     DayModel l = getSelectLast();
                     dm = handler.deal(f, l, b.getTime(), dm);
                 }
-               // dm.setDesc((int) (Math.random() * 30) + "");
+                // dm.setDesc((int) (Math.random() * 30) + "");
                 map.put(b.getTime(), dm);
             }
             list.add(map);
@@ -213,9 +219,41 @@ public class EasyCalendar extends ListView implements EasyInterface {
     @Override
     public void setData(List<HashMap<Date, DayModel>> mapList) {
         this.list = mapList;
+
+        if (getSelectFirst() != null || getSelectLast() != null) {
+          //  dealInitSelected();
+        }
+
         // if (adapter != null) adapter.notifyDataSetChanged();
 
     }
+
+
+    private void dealInitSelected() {
+        if (list == null || handler == null) return;
+
+        for (HashMap<Date, DayModel> map : list) {
+
+            Iterator iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Date, DayModel> entry = (Map.Entry<Date, DayModel>) iterator.next();
+                Date date = entry.getKey();
+                DayModel model = entry.getValue();
+                Log.d("model", model.getDate() + "");
+                //  handler.deal(getSelectFirst(), getSelectLast(), date, model);
+
+                if (DateUtils.sameDate(getSelectFirst().getDate(), model.getDate()))
+                    model.setStatus(DayModel.FIRST);
+                else if (DateUtils.sameDate(getSelectLast().getDate(), model.getDate()))
+                    model.setStatus(DayModel.LAST);
+
+            }
+
+        }
+
+
+    }
+
 
     /**
      * deal every daymodel depends EasyHandler
@@ -230,9 +268,8 @@ public class EasyCalendar extends ListView implements EasyInterface {
                 Map.Entry<Date, DayModel> entry = (Map.Entry<Date, DayModel>) iterator.next();
                 Date date = entry.getKey();
                 DayModel model = entry.getValue();
-                Log.d("model",model.getDate()+"");
+                Log.d("model", model.getDate() + "");
                 handler.deal(getSelectFirst(), getSelectLast(), date, model);
-
             }
 
 
