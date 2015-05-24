@@ -1,7 +1,5 @@
 package com.cheheihome.easycalendar.widget;
 
-import android.graphics.Color;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,14 +11,14 @@ public class DayModel {
     public final static int LAST = 0x04;
     public final static int DISABLE = 0x05;
     public final static int BEFORETODAY = 0x06;
-
-    public int DefaultTextColor = Color.BLACK;
-    public int TextWhite = Color.WHITE;
-    public int DisColor = Color.GRAY;
-    public int FirstColor = Color.RED;
-    public int LastColor = Color.RED;
-    public int MidColor = Color.YELLOW;
-    public int NormalColor = Color.WHITE;
+//
+//    public int DefaultTextColor = Color.BLACK;
+//    public int TextWhite = Color.WHITE;
+//    public int DisColor = Color.GRAY;
+//    public int FirstColor = Color.RED;
+//    public int LastColor = Color.RED;
+//    public int MidColor = Color.YELLOW;
+//    public int NormalColor = Color.WHITE;
 
     public int STATUS = NORMAL;
     //    public int day;
@@ -137,20 +135,12 @@ public class DayModel {
     @Override
     public String toString() {
         return "DayModel{" +
-                "DefaultTextColor=" + DefaultTextColor +
-                ", TextWhite=" + TextWhite +
-                ", DisColor=" + DisColor +
-                ", FirstColor=" + FirstColor +
-                ", LastColor=" + LastColor +
-                ", MidColor=" + MidColor +
-                ", NormalColor=" + NormalColor +
-                ", STATUS=" + STATUS +
-
+                "STATUS=" + STATUS +
                 ", isToday=" + isToday +
                 ", date=" + date +
                 ", dayStr='" + dayStr + '\'' +
                 ", desc='" + desc + '\'' +
-                ", price='" + price + '\'' +
+                ", price=" + price +
                 ", enable=" + enable +
                 '}';
     }

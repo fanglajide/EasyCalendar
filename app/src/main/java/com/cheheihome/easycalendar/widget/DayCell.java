@@ -14,15 +14,15 @@ import java.util.Date;
  */
 public class DayCell extends TextView implements View.OnClickListener {
 
-    private int DefaultBackgroud = Color.TRANSPARENT;
-    private int DefaultTextColor = Color.BLACK;
+    private final int DefaultBackgroud = Color.TRANSPARENT;
+    private int DefaultTextColor = 0xff4F4F4F;
     private int TextWhite = Color.WHITE;
-    private int DisColor = Color.GRAY;
-    private int FirstColor = Color.RED;
-    private int LastColor = Color.RED;
-    private int MidColor = Color.YELLOW;
+    private int DisColor =0xffCCCCCC;
+    private int FirstColor =0xfff35758;
+    private int LastColor =0xfff35758;;
+    private int MidColor =0xffF08080;
     //  private int NormalColor = Color.WHITE;
-    private int BeforeBackground = Color.BLACK;
+    private int BeforeBackground = Color.TRANSPARENT;
     private int TodayBack = Color.GREEN;
 
    // private int STATUS = DayModel.NORMAL;

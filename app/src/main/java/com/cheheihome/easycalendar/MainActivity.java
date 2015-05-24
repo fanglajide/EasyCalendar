@@ -46,8 +46,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         e = Calendar.getInstance();
         e.add(Calendar.MONTH, 6);
         // easyCalendar.setRange(b.getTime(), e.getTime());
-        Date fd = new Date(115, 5, 3);
-        Date ld = new Date(115, 5, 7);
+        Calendar fffff = Calendar.getInstance();
+        fffff.set(2015, 5, 3);
+        Date fd = fffff.getTime();
+        fffff.set(2015, 5, 7);
+        Date ld = fffff.getTime();
 
         easyCalendar.setSelectedRange(fd, ld);
 
@@ -95,7 +98,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                                 return model;
                                             } //else
                                             // Toast.makeText(MainActivity.this, temp.getDate() + "", Toast.LENGTH_SHORT).show();
-                                            if (first.getDate().before(date)&&DateUtils.InafterDays(leastSelect, first.getDate(), date)) {
+                                            if (first.getDate().before(date) && DateUtils.InafterDays(leastSelect, first.getDate(), date)) {
                                                 model.setStatus(DayModel.DISABLE);
                                                 return model;
                                             }
@@ -218,7 +221,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             map.put(b.getTime(), m);
             int maxday = b.getActualMaximum(Calendar.DATE);
             for (; b.get(Calendar.DAY_OF_MONTH) < maxday; ) {
-
+                Log.d("DAYOFMONTH",b.get(Calendar.DAY_OF_MONTH)+"---:"+maxday);
                 DayModel dm = new DayModel(b.getTime());
 
                 //dm.setPrice((int) (Math.random() * 30));
@@ -231,6 +234,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 b.add(Calendar.DAY_OF_MONTH, 1);
                 lastDay = b.getTime();
             }
+            map.put(b.getTime(),new DayModel(b.getTime()));
             list.add(map);
         }
 

@@ -1,8 +1,8 @@
 package com.cheheihome.easycalendar.widget;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
-import android.widget.GridLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,7 +18,7 @@ public class MonthArea extends GridLayout {
     DayCell[][] cells = new DayCell[6][7];
     HashMap<Date, DayModel> dataMap;
     Calendar c = Calendar.getInstance();
-
+    boolean strech = false;
 
     public MonthArea(Context context) {
         super(context);
@@ -38,10 +38,27 @@ public class MonthArea extends GridLayout {
     public void setData(HashMap<Date, DayModel> dataMap) {
         if (dataMap != null) {
             this.dataMap = dataMap;
-
             show(dataMap);
         } else return;
 
+    }
+
+
+    @Override
+    protected void onMeasure(int widthSpec, int heightSpec) {
+        int w = MeasureSpec.getSize(widthSpec);
+        int h = MeasureSpec.getSize(heightSpec);
+
+        // super.onMeasure(widthSpec, MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,MeasureSpec.AT_MOST));
+        int childCount = getChildCount();
+        int perH = getChildAt(0).getMeasuredHeight();
+        int cellSize = w / 7;
+        h = strech ? 6 * cellSize : 5 * cellSize;
+        h+=50;
+        heightSpec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.AT_MOST);
+
+     //   setMeasuredDimension(w, h);
+         super.onMeasure(widthSpec, heightSpec);
     }
 
     DayCell.DayCallBack callBack;
@@ -54,6 +71,7 @@ public class MonthArea extends GridLayout {
      * clean the first and last rows
      */
     public void clean() {
+      //  if(true)return;
         //for(DayCell c:cells)c.setText("");
         Calendar c = Calendar.getInstance();
         int temp = c.get(Calendar.WEEK_OF_MONTH) - 1;
@@ -101,7 +119,7 @@ public class MonthArea extends GridLayout {
 
             int i = c.get(Calendar.WEEK_OF_MONTH) - 1;
             int j = c.get(Calendar.DAY_OF_WEEK) - 1;
-         //   Log.d("daycell:", i + ":" + j);
+            //   Log.d("daycell:", i + ":" + j);
 
             //  cells[j][i].setText(i + ":" + j));
             cells[i][j].setDate(c.getTime());
@@ -117,6 +135,8 @@ public class MonthArea extends GridLayout {
         }
     }
 
+    private int maxI;
+
     private void show(HashMap<Date, DayModel> dataMap) {
         // if(true)return;
         Iterator iter = dataMap.entrySet().iterator();
@@ -127,7 +147,8 @@ public class MonthArea extends GridLayout {
             c.setTime(date);
             int i = c.get(Calendar.WEEK_OF_MONTH) - 1;
             int j = c.get(Calendar.DAY_OF_WEEK) - 1;
-          //  Log.d("ij", "date:" + date + "---i:" + i + "---j:" + j);
+            if (i > maxI) maxI = i;
+            //  Log.d("ij", "date:" + date + "---i:" + i + "---j:" + j);
             // cells[i][j].setDate(date);
             cells[i][j].setCallBack(new DayCell.DayCallBack() {
                 @Override
@@ -140,10 +161,26 @@ public class MonthArea extends GridLayout {
 
 
         }
+
+//        for (int j = 0; j < 7; j++) {
+//            if (maxI < 5) cells[5][j].setVisibility(GONE);
+//            else cells[5][j].setVisibility(VISIBLE);
+//        }
+
+        strech = maxI == 5;
+      //  setRowCount(6);
+        requestLayout();
+//        int x = strech ? 6 : 5;
+//
+//        int h = getChildAt(2).getMeasuredHeightAndState();
+//        int w = getChildAt(2).getMeasuredWidthAndState();
+//        int hei = MeasureSpec.makeMeasureSpec(h * x, MeasureSpec.EXACTLY);
+//        int wid = MeasureSpec.makeMeasureSpec(w * 7, MeasureSpec.EXACTLY);
+//
+//        measure(wid, hei);
+
+
     }
-
-
-
 
 
 }

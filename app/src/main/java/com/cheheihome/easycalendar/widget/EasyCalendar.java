@@ -207,6 +207,7 @@ public class EasyCalendar extends ListView implements EasyInterface {
                 // dm.setDesc((int) (Math.random() * 30) + "");
                 map.put(b.getTime(), dm);
             }
+            map.put(b.getTime(),new DayModel(b.getTime()));
             list.add(map);
         }
         // if (adapter != null) adapter.notifyDataSetChanged();

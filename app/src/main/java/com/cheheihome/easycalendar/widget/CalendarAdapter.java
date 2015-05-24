@@ -65,8 +65,7 @@ public class CalendarAdapter extends BaseAdapter {
         Date date = (Date) iter.next();
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        holder.header.setText(c.get(Calendar.YEAR) + "/" + String.valueOf(c.get(Calendar.MONTH)) + 1);
-
+        holder.header.setText(c.get(Calendar.YEAR) + "/" + Integer.valueOf(c.get(Calendar.MONTH)+1) );
 
         return convertView;
     }
